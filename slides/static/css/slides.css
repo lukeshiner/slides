@@ -1,0 +1,44 @@
+#imageViewer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+}
+
+.imageContainer {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+.imageViewerImage {
+    object-fit: scale-down;
+}
+
+.imageThumb {
+    max-width: 300px;
+}
+
+.imageThumb img {
+    max-width: 300px;
+    max-height: 300px;
+    min-height: 50px;
+    object-fit: scale-down;
+}
+
+.boxThumb img {
+    max-width: 200px;
+    max-height: 200px;
+    min-height: 50px;
+    object-fit: scale-down;
+}
+
+
+#imageInfo {
+    width: 400px;
+}

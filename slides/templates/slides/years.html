@@ -1,0 +1,22 @@
+{% extends "slides/base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="d-lg-flex flex-row flex-wrap justify-content-evenly">
+            {% for year, image in years.items %}
+                <div class="border border-light-subbtle p-3 rounded m-2">
+                    <a href="{% url "slides:year" year %}"
+                       class="text-reset text-decoration-none">
+                        <div class="d-flex flex-row align-items-center">
+                            <img src="{{ image.thumb_url }}"
+                                 alt="{{ image.name }}"
+                                 height="100"
+                                 width=""
+                                 class="card-img object-fit-scale">
+                            <div class="fs-3 p-3">{{ year }}</div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

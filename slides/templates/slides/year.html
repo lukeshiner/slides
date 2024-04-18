@@ -1,0 +1,14 @@
+{% extends "slides/image_list_base.html" %}
+{% block nav %}
+    <ul class="nav nav-pills fs-4">
+        {% for nav_year in years %}
+            <li class="nav-item">
+                <a href="{% url "slides:year" nav_year %}"
+                   class="nav-link {% if nav_year == year %}active{% endif %}">{{ nav_year }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock nav %}
+{% block page_head %}
+    <h1 class="display-1 mb-3">{{ year }}</h1>
+{% endblock page_head %}

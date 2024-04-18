@@ -1,0 +1,42 @@
+{% extends "slides/image_list_base.html" %}
+{% block nav %}
+    {% with previous_box=box.previous_box %}
+        {% if previous_box %}
+            <a href="{{ box.previous_box.get_absolute_url }}"
+               class="btn btn-lg btn-primary fs-2 m-2"><i class="bi bi-chevron-compact-left"></i></a>
+        {% else %}
+            <span>&nbsp;</span>
+        {% endif %}
+    {% endwith %}
+    <a href="{% url "slides:index" %}"
+       class="btn btn-lg btn-primary fs-2 m-2"><i class="bi bi-house-door"></i></a>
+    {% with next_box=box.next_box %}
+        {% if next_box %}
+            <a href="{{ box.next_box.get_absolute_url }}"
+               class="btn btn-lg btn-primary fs-2 m-2"><i class="bi bi-chevron-compact-right"></i></a>
+        {% else %}
+            <span>&nbsp;</span>
+        {% endif %}
+    {% endwith %}
+    {% if request.user.is_superuser %}
+        <a href="{% url "slides:add_slide" box.pk %}"
+           class="btn btn-primary align-self-center">Add Slide</a>
+    {% endif %}
+{% endblock nav %}
+{% block page_head %}
+    <div class="row mb-3">
+        <div class="col-lg-3 fs-3">{{ box.label|linebreaks }}</div>
+        <div class="col-lg-3 fs-3">{{ box.notes|linebreaks }}</div>
+        <div class="col-lg-3 fs-4">
+            <div>
+                <span class="text-muted">Year:&nbsp;</span>{{ box.year }}
+            </div>
+            <div>
+                {% if box.developed_readable %}
+                    <span class="text-muted">Developed:&nbsp;</span>
+                    {{ box.developed_readable }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock page_head %}

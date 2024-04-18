@@ -1,0 +1,30 @@
+{% extends "slides/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container-fluid">
+        <div>{{ slide_count }} slides</div>
+        {% for box in boxes %}
+            <a href="{{ box.get_absolute_url }}"
+               class="text-reset text-decoration-none">
+                <div class="row m-3 p-2 border border-3 border-light-subtle rounded">
+                    <div class="col-lg-3">
+                        <div class="boxThumb">
+                            {% with slide=box.first_slide %}
+                                <img src="{{ slide.thumb_url }}"
+                                     alt="{{ slide.name }}"
+                                     class="rounded"
+                                     height=""
+                                     width="">
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <div class="col-lg-3 fs-4">{{ box.label|linebreaks }}</div>
+                    <div class="col-lg-1 fs-4">
+                        <div>{{ box.year }}</div>
+                        <div class="text-muted fs-6">{{ box.name }}</div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock content %}

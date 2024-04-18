@@ -1,0 +1,23 @@
+<div class="d-inline-flex flex-row flex-wrap justify-content-evenly">
+    {% for slide in slides %}
+        <div class="imageThumb d-flex flex-column m-2 p-2 bg-dark-subtle rounded"
+             data-slide-pk="{{ slide.pk }}">
+            <div class="d-flex flex-row justify-content-between">
+                <span>
+                    {% if slide.date %}
+                        {{ slide.date }}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </span>
+                <span class="text-muted">{{ slide.name }}</span>
+            </div>
+            <img src="{{ slide.thumb_url }}"
+                 height=""
+                 width=""
+                 alt="{{ slide.name }}"
+                 class="flex-fill rounded">
+            <span>{{ slide.notes|linebreaks }}</span>
+        </div>
+    {% endfor %}
+</div>

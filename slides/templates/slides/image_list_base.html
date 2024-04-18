@@ -1,0 +1,18 @@
+{% extends "slides/base.html" %}
+{% load static %}
+{% block additional_head %}
+    <script>var loadImageURL = "{% url 'slides:image_viewer_image' %}";</script>
+    {{ slide_numbers|json_script:"slideNumbers" }}
+    <script src="{% static 'scripts/image_viewer.js' %}"></script>
+{% endblock additional_head %}
+{% block content %}
+    <div class="d-flex justify-content-evenly m-3">
+        {% block nav %}
+        {% endblock nav %}
+    </div>
+    {% block page_head %}
+    {% endblock page_head %}
+    {% include "slides/image_thumbs.html" %}
+    {% block page_foot %}
+    {% endblock page_foot %}
+{% endblock content %}

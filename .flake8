@@ -1,0 +1,9 @@
+[flake8]
+ignore = E203, E266, E501, W503, D105
+max-line-length = 80
+max-complexity = 18
+select = B,C,E,F,W,T4,B9,D,Y
+docstring-convention = pep257
+per-file-ignores = 
+    tests/*: D
+    stubs/*: D, E302, E501, E701, W503, E203, E704, F401, E301

@@ -1,0 +1,38 @@
+<div id="imageViewer" class="bg-dark d-none">
+    <div class="imageContainer d-flex flex-shrink-1 justify-content-space-between w-100">
+        <div class="d-flex flex-column">
+            <button id="fullscreenButton" class="btn btn-lg text-start">
+                <i class="bi bi-arrows-fullscreen"></i>
+            </button>
+        </div>
+        <div class="d-flex flex-column flex-fill">
+            <div id="imageBox" class="d-flex flex-fill flex-row w-100 h-100">
+                <button class="btn btn-lg d-flex flex-fill align-items-center fs-3"
+                        id="previousSlideButton">
+                    <i class="bi bi-chevron-compact-left"></i>
+                </button>
+                <div id="imageInfo" class="d-flex flex-column fs-3">
+                    <div>
+                        <span class="fs-4 p-2"><span id="slideNumber"></span>/<span id="slideCount"></span></span>
+                    </div>
+                    <div id="slideName" class="fs-4 text-muted"></div>
+                    <div id="slideNotes" class="mt-1 mb-2"></div>
+                    <div id="slideDate" class="fs-4 text-muted"></div>
+                </div>
+                <img src=""
+                     alt=""
+                     class="w-100 h-100 imageViewerImage"
+                     id="mainImage"
+                     height=""
+                     width="">
+                <button class="btn btn-lg d-flex flex-fill align-items-center fs-3"
+                        id="nextSlideButton">
+                    <i class="bi bi-chevron-compact-right"></i>
+                </button>
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-end">
+            <button class="btn btn-lg btn-close p-2 m-2 fs-4" id="closeImageViewer"></button>
+        </div>
+    </div>
+</div>

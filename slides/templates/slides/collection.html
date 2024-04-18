@@ -1,0 +1,11 @@
+{% extends "slides/image_list_base.html" %}
+{% block nav %}
+    <ul class="nav nav-pills fs-4">
+        <li class="nav-item">
+            <a href="{% url "slides:collections" %}" class="nav-link"><i class="bi bi-arrow-left-square"></i>&nbsp;Collections</a>
+        </li>
+    </ul>
+{% endblock nav %}
+{% block page_head %}
+    <h1 class="display-1 mb-3">{{ collection }}</h1>
+{% endblock page_head %}
