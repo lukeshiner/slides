@@ -118,7 +118,7 @@ class Box(models.Model):
     @transaction.atomic()
     def add_slides(self):
         existing_slides = self.slides.values_list("slide_number", flat=True)
-        for slide_number in range(1, self.slide_directory_count()):
+        for slide_number in range(1, self.slide_directory_count() + 1):
             if slide_number in existing_slides:
                 continue
             Slide(box=self, slide_number=slide_number).save()
