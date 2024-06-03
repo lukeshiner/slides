@@ -19,8 +19,12 @@
         {% endif %}
     {% endwith %}
     {% if request.user.is_superuser %}
-        <a href="{% url "slides:add_slide" box.pk %}"
-           class="btn btn-primary align-self-center">Add Slide</a>
+        <div>
+            <a href="{% url "slides:add_slide" box.box_number %}"
+               class="btn btn-primary align-self-center">Add Slide</a>
+            <a href="{% url "slides:update_slide" box.box_number 1 %}"
+               class="btn btn-primary align-self-center">Update Slides</a>
+        </div>
     {% endif %}
 {% endblock nav %}
 {% block page_head %}

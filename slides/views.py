@@ -4,8 +4,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import RedirectView, TemplateView, View
-from django.views.generic.edit import CreateView
-
+from django.views.generic.edit import CreateView, UpdateView
+from django.core.exceptions import ObjectDoesNotExist
 from slides import forms, models
 
 
@@ -132,10 +132,11 @@ class AddSlide(CreateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        box_id = self.kwargs.get("box_pk")
-        initial["box"] = box_id
+        box = get_object_or_404(models.Box, box_number=self.kwargs.get("box_number"))
+        box_number = self.kwargs.get("box_number")
+        initial["box"] = box.pk
         last_slide = (
-            models.Slide.objects.filter(box__id=box_id)
+            models.Slide.objects.filter(box__box_number=box_number)
             .order_by("-slide_number")
             .first()
         )
@@ -145,11 +146,71 @@ class AddSlide(CreateView):
             initial["slide_number"] = 1
         return initial
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["box"] = get_object_or_404(
+            models.Box, box_number=self.kwargs.get("box_number")
+        )
+        return context
+
     def get_success_url(self):
-        return reverse("slides:add_slide", args=[self.object.box.pk])
+        return reverse("slides:add_slide", args=[self.object.box.box_number])
+
+
+class UpdateSlide(UpdateView):
+    template_name = "slides/update_slide.html"
+    model = models.Slide()
+    form_class = forms.SlideForm
+
+    def get_object(self):
+        return get_object_or_404(
+            models.Slide,
+            box__box_number=self.kwargs["box_number"],
+            slide_number=self.kwargs["slide_number"],
+        )
+
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.object.date:
+            initial["date_text"] = self.object.date.strftime("%d %m %y")
+        return initial
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["box"] = get_object_or_404(
+            models.Box, box_number=self.kwargs.get("box_number")
+        )
+        context["previous_slide"] = self.get_update_slide_url(
+            context["box"], context["form"].instance.slide_number - 1
+        )
+        context["next_slide"] = self.get_update_slide_url(
+            context["box"], context["form"].instance.slide_number + 1
+        )
+        return context
+
+    def get_update_slide_url(self, box, slide_number):
+        try:
+            slide = box.slides.get(slide_number=slide_number)
+        except ObjectDoesNotExist:
+            return None
+        else:
+            return reverse(
+                "slides:update_slide", args=[slide.box.box_number, slide.slide_number]
+            )
+
+    def get_success_url(self):
+        if url := self.get_update_slide_url(
+            self.object.box, self.object.slide_number + 1
+        ):
+            return url
+        else:
+            return self.get_update_slide_url(self.object.box, 1)
 
 
 class AddMissingSlides(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         models.Box.objects.add_slides()
-        return reverse("slides:index")
+        try:
+            return self.request.META["HTTP_REFERER"]
+        except Exception:
+            return reverse("slides:index")

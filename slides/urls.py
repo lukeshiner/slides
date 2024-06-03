@@ -12,7 +12,12 @@ urlpatterns = [
     path("", views.Index.as_view(), name="index"),
     path("box/<int:box_number>", views.Box.as_view(), name="box"),
     path("add_box", views.AddBox.as_view(), name="add_box"),
-    path("add_slide/<int:box_pk>", views.AddSlide.as_view(), name="add_slide"),
+    path("add_slide/<int:box_number>", views.AddSlide.as_view(), name="add_slide"),
+    path(
+        "update_slide/<int:box_number>/<int:slide_number>",
+        views.UpdateSlide.as_view(),
+        name="update_slide",
+    ),
     path(
         "image_viewer_image",
         views.ImageViewerImage.as_view(),

@@ -80,6 +80,7 @@ class Box(models.Model):
             "thumb_url": self.thumb_url(slide_number),
             "date": "",
             "notes": "",
+            "box_number": self.box_number,
         }
         try:
             slide_obj = Slide.objects.get(box=self, slide_number=slide_number)
@@ -156,11 +157,16 @@ class Slide(models.Model):
     def thumb_url(self):
         return f"{settings.THUMB_MEDIA_URL}{self.box.name()}/{self.name()}_thumb.jpg"
 
+    def slide_url(self):
+        return f"{settings.SLIDE_MEDIA_URL}{self.box.name()}/{self.name()}.jpg"
+
 
 class Collection(models.Model):
     name = models.CharField(max_length=255)
     slides = models.ManyToManyField(Slide, through="CollectionSlide")
-    collection_order = models.PositiveIntegerField(default=0)
+    collection_order = models.PositiveIntegerField(
+        default=0, blank=False, null=False, db_index=True
+    )
 
     class CollectionManager(models.Manager):
         @transaction.atomic()
@@ -168,7 +174,7 @@ class Collection(models.Model):
             max_slide_order = (
                 CollectionSlide.objects.order_by("slide_order").last().slide_order
             )
-            collection = self.create(name=name)
+            collection = self.create(name=name, collection_order=0)
             boxes = [Box.objects.get(box_number=_) for _ in box_numbers]
             slide_number = 1
             for box in boxes:
@@ -199,7 +205,9 @@ class CollectionSlide(models.Model):
     slide = models.ForeignKey(
         Slide, on_delete=models.CASCADE, related_name="collection_slides"
     )
-    slide_order = models.PositiveIntegerField(default=0)
+    slide_order = models.PositiveIntegerField(
+        default=0, blank=False, null=False, db_index=True
+    )
 
     class Meta:
         verbose_name = "Collection Slide"

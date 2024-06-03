@@ -36,7 +36,13 @@ class SlideForm(forms.ModelForm):
         super().clean()
         text = self.cleaned_data.get("date_text")
         if text:
-            self.cleaned_data["date"] = dt.datetime.strptime(text, "%d %m %y").date()
+            date = dt.datetime.strptime(text, "%d %m %y").date()
+            if date > dt.datetime.now().date():
+                day, month, year = text.split()
+                date = dt.datetime.strptime(
+                    f"{day} {month} 19{year}", "%d %m %Y"
+                ).date()
+            self.cleaned_data["date"] = date
         else:
             self.cleaned_data["date"] = None
         return self.cleaned_data
