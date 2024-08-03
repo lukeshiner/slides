@@ -32,6 +32,11 @@ urlpatterns = [
         views.AddMissingSlides.as_view(),
         name="add_missing_slides",
     ),
+    path(
+        "toggle_collection/<int:slide_id>",
+        views.ToggleCollection.as_view(),
+        name="toggle_collection",
+    ),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

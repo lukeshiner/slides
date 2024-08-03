@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import RedirectView, TemplateView, View
@@ -214,3 +214,22 @@ class AddMissingSlides(RedirectView):
             return self.request.META["HTTP_REFERER"]
         except Exception:
             return reverse("slides:index")
+
+
+class ToggleCollection(View):
+    collection_name = "Dad"
+
+    def get(self, *args, **kwargs):
+        collection = models.Collection.objects.get(name=self.collection_name)
+        slide = get_object_or_404(models.Slide, id=self.kwargs.get("slide_id"))
+        try:
+            relation = models.CollectionSlide.objects.get(
+                collection=collection, slide=slide
+            )
+        except models.CollectionSlide.DoesNotExist:
+            models.CollectionSlide(
+                collection=collection, slide=slide, slide_order=0
+            ).save()
+        else:
+            relation.delete()
+        return HttpResponse("ok")

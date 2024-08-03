@@ -11,6 +11,10 @@
                     {% endif %}
                 </span>
                 <div>
+                    <a href="{% url "slides:toggle_collection" slide.id %}">
+                        <span class="btn btn-sm btn-primary">
+                            <i class="bi bi-file-earmark-plus"></i></span>
+                    </a>
                     <a href="{% url "slides:update_slide" slide.box.box_number slide.slide_number %}"
                        class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
                     <span class="text-muted">{{ slide.name }}</span>

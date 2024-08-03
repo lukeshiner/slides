@@ -160,6 +160,12 @@ class Slide(models.Model):
     def slide_url(self):
         return f"{settings.SLIDE_MEDIA_URL}{self.box.name()}/{self.name()}.jpg"
 
+    def slide_path(self):
+        return self.box.slide_directory() / f"{self.name()}.jpg"
+
+    def thumb_path(self):
+        return self.box.thumb_directory() / f"{self.name()}_thumb.jpg"
+
 
 class Collection(models.Model):
     name = models.CharField(max_length=255)
